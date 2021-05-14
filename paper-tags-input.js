@@ -41,7 +41,7 @@ class PaperTagsInput extends PolymerElement {
                 }
             </style>
         
-            <paper-input label="[[label]]" placeholder="+tag" on-keydown="_onInputKeydown">
+            <paper-input label="[[label]]" placeholder="[[placeholder]]" on-keydown="_onInputKeydown">
                 <div slot="prefix">
                     <template is="dom-repeat" items="[[tags]]">
                         <paper-chip selectable="">[[item]] <iron-icon icon="icons:cancel" on-click="_onTagRemoveClicked"></iron-icon></paper-chip>
@@ -54,6 +54,11 @@ class PaperTagsInput extends PolymerElement {
     static get is() { return 'paper-tags-input'; }
     static get properties() {
         return {
+            placeholder: {
+		type: String,
+		value: "+tag",
+		readOnly: true
+	    },
             label: {
                 type: String,
                 value: 'Tags'
@@ -70,7 +75,7 @@ class PaperTagsInput extends PolymerElement {
         if (this.tags === null) {
             this.tags = [];
         }
-        
+        const oldValue = [...this.tags];
         var trimmedTag = tag.replace(/^\s+/, '').replace(/\s+$/, '');
         if (trimmedTag !== '') {
             var tagIndex = this.tags.indexOf(trimmedTag);
@@ -78,25 +83,38 @@ class PaperTagsInput extends PolymerElement {
                 this.push('tags', trimmedTag);
             }
         }
+	this._tagsChanged (this.tags, oldValue);
     }
     removeTag(tag) {
         if (this.tags === null) {
             return;
         }
+	const oldValue = [...this.tags];
         var tagIndex = this.tags.indexOf(tag);
         if (tagIndex > -1) {
             this.splice('tags', tagIndex, 1);
         }
+	this._tagsChanged (this.tags, oldValue);
     }
 
     _onTagRemoveClicked(e) {
         this.removeTag(e.model.item);
     }
+
     _onInputKeydown(e) {
-        if (e.keyCode === 13) {
+        if (e.keyCode === 13) {	    
             this.addTag(e.target.value.toLowerCase());
             e.target.value = '';
         }
+    }
+
+    _tagsChanged (newValue, oldValue) {
+	 this.dispatchEvent(new CustomEvent('tags-changed-complete', {
+           detail: {
+	     value: newValue,
+	     oldValue: oldValue
+           }
+         }));
     }
 }
 
