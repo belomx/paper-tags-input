@@ -19,6 +19,7 @@ class PaperTagsInput extends PolymerElement {
             <style>
                 :host {
                     display: block;
+		    @apply --paper-tag-input-mixin;
                 }
                 :host[hidden] {
                     display: none !important;
@@ -28,16 +29,19 @@ class PaperTagsInput extends PolymerElement {
                     height: 36px;
                     width: auto !important;
                     padding-left: 0.5em;
+		    @apply --paper-tag-input-input-mixin;
                 }
                 paper-chip {
                     margin: 2px;
                     padding-right: 6px;
                     cursor: pointer;
+		    @apply --paper-tag-input-chip-mixin;
                 }
                 iron-icon {
                     --iron-icon-height: 20px;
                     --iron-icon-width: 20px;
                     color: var(--disabled-text-color);
+		    @apply --paper-tag-input-icon-mixin;
                 }
             </style>
         
@@ -56,8 +60,7 @@ class PaperTagsInput extends PolymerElement {
         return {
             placeholder: {
 		type: String,
-		value: "+tag",
-		readOnly: true
+		value: "+tag"
 	    },
             label: {
                 type: String,
