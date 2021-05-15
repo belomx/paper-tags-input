@@ -2,8 +2,9 @@ import { html, PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/polymer/lib/elements/dom-repeat.js';
 import '@cwmr/paper-chip/paper-chip.js';
+import '@polymer/polymer/lib/elements/dom-repeat.js';
+import '@polymer/polymer/lib/utils/render-status.js'
 
 /**
 * `paper-tags-input`
@@ -16,7 +17,7 @@ import '@cwmr/paper-chip/paper-chip.js';
 class PaperTagsInput extends PolymerElement {
     static get template() {
         return html`
-            <style>
+            <style include="paper-tags-input-shared-styles">
                 :host {
                     display: block;
 		    @apply --paper-tag-input-mixin;
@@ -74,6 +75,10 @@ class PaperTagsInput extends PolymerElement {
         };
     }
 
+    constructor() {
+        super();
+    }
+
     addTag(tag) {
         if (this.tags === null) {
             this.tags = [];
@@ -121,4 +126,5 @@ class PaperTagsInput extends PolymerElement {
     }
 }
 
-window.customElements.define(PaperTagsInput.is, PaperTagsInput);
+customElements.define(PaperTagsInput.is, PaperTagsInput);
+export {PaperTagsInput};
